@@ -2,6 +2,7 @@ package com.prueba.wom.controller;
 
 import com.prueba.wom.model.Task;
 import com.prueba.wom.service.TaskService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
+@Api(tags = "Task")
 public class TaskController {
 
     @Autowired
