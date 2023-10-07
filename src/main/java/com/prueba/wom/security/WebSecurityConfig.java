@@ -19,19 +19,32 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
-
+/**
+ * Configuración de seguridad para la aplicación.
+ * Define cómo se debe autenticar y autorizar las peticiones.
+ * También proporciona configuraciones adicionales como CORS.
+ *
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
+    /**
+     * Constructor que inicializa el proveedor de tokens JWT.
+     */
     @Autowired
     public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * Configura las reglas de seguridad para las peticiones HTTP.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -44,7 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new CorsFilter(corsConfigurationSource()), AbstractPreAuthenticatedProcessingFilter.class);
 
     }
-
+    /**
+     * Configura las reglas de seguridad para recursos web.
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs")
@@ -54,18 +69,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**")
                 .antMatchers("/public");
     }
-
+    /**
+     * Bean para codificar las contraseñas.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
-
+    /**
+     * Bean para el gestor de autenticación.
+     */
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    /**
+     * Configura las reglas de CORS para las peticiones HTTP.
+     */
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));

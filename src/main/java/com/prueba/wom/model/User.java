@@ -1,9 +1,17 @@
 package com.prueba.wom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
-
+/**
+ * Modelo que representa un usuario en el sistema.
+ * Esta entidad se mapea con la tabla "users" en la base de datos.
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -21,6 +29,7 @@ public class User implements Serializable {
     @Column(name = "username", unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 

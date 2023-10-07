@@ -4,6 +4,16 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
+/**
+ * DTO que representa una solicitud de inicio de sesión.
+ *
+ * Esta clase se utiliza para capturar y transportar los datos de inicio de sesión
+ * del usuario desde la capa de presentación hasta la capa de servicio.
+ *
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 public class LoginRequest implements Serializable {
 
     @ApiModelProperty(position = 0)

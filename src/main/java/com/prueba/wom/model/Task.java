@@ -1,7 +1,13 @@
 package com.prueba.wom.model;
 
 import javax.persistence.*;
-
+/**
+ * Modelo que representa una tarea en el sistema.
+ * Esta entidad se mapea con la tabla "task" en la base de datos.
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 @Entity
 @Table(name = "task")
 public class Task {

@@ -13,16 +13,31 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio para recuperar detalles de un usuario para propósitos de autenticación y autorización.
+ * Este servicio se encarga de recuperar los detalles de un usuario
+ * a partir del nombre de usuario y luego lo convierte a un objeto UserDetails
+ * compatible con Spring Security.
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 @Service
 public class MyUserDetails implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Constructor que inicializa el repositorio de usuarios.
+     */
     @Autowired
     public MyUserDetails(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Carga un usuario a partir del nombre de usuario y lo convierte a un objeto UserDetails.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = userRepository.findByUsername(username);
@@ -38,7 +53,6 @@ public class MyUserDetails implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
-
         return org.springframework.security.core.userdetails.User//
                 .withUsername(username)
                 .password(user.getPassword())
@@ -49,5 +63,4 @@ public class MyUserDetails implements UserDetailsService {
                 .disabled(false)
                 .build();
     }
-
 }

@@ -14,11 +14,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * Configuración de Swagger para la API de PRUEBA WOM.
+ * <p>
+ * Esta clase se encarga de configurar Swagger, una herramienta que permite
+ * documentar y probar de forma interactiva los endpoints de la API.
+ * </p>
+ *
+ * @author Steven Cuevas
+ * @version 1.0
+ * @since 10/2023
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
+    /**
+     * Configura la documentación de Swagger para la API.
+     */
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
@@ -27,7 +40,9 @@ public class SwaggerConfig {
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .securityContexts(Collections.singletonList(securityContext()));
     }
-
+    /**
+     * Configura los controladores de recursos para Swagger UI.
+     */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
@@ -35,13 +50,17 @@ public class SwaggerConfig {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-
+    /**
+     * Define la clave API para la autenticación.
+     */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("API PRUEBA WOM")
                 .description("Interfaz de servicios entre el Backend y el FrontEnd (UI)")
                 .contact(new Contact("Steven Cuevas", "", "stevenmartincd@gmail.com")).build();
     }
-
+    /**
+     * Configura el contexto de seguridad para Swagger.
+     */
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
     }
@@ -52,7 +71,9 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.any())
                 .build();
     }
-
+    /**
+     * Proporciona la configuración de autenticación por defecto.
+     */
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
