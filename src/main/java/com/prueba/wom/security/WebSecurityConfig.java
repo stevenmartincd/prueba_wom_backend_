@@ -34,33 +34,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        // Disable CSRF (cross site request forgery)
         http.csrf().disable();
-
-        // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        // Entry points
-        http.authorizeRequests()//
+        http.authorizeRequests()
                 .antMatchers("/users/signin").permitAll()
-
                 .anyRequest().authenticated();
-
-        // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
-
-        // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
-
-        // CORS configuration
         http.addFilterBefore(new CorsFilter(corsConfigurationSource()), AbstractPreAuthenticatedProcessingFilter.class);
 
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // Allow swagger to be accessed without authentication
         web.ignoring().antMatchers("/v2/api-docs")
                 .antMatchers("/swagger-resources/**")
                 .antMatchers("/swagger-ui.html")

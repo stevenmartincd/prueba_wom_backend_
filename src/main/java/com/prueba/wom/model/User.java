@@ -25,13 +25,13 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "role")
-    private boolean role;
+    private String role;
 
     public User() {
 
     }
 
-    public User(Integer id, String name, String lastname, String username, String password, boolean role) {
+    public User(Integer id, String name, String lastname, String username, String password, String role) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -80,5 +80,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
