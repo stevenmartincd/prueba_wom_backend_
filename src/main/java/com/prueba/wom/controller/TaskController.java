@@ -1,5 +1,6 @@
 package com.prueba.wom.controller;
 
+import com.prueba.wom.dto.request.UpdateTaskStatusRequest;
 import com.prueba.wom.model.Task;
 import com.prueba.wom.service.TaskService;
 import io.swagger.annotations.Api;
@@ -31,29 +32,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping
-    @ApiOperation(value = "Lista de todos las tareas")
-    @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Something went wrong"),
-            @ApiResponse(code = 403, message = "Access denied"),
-            @ApiResponse(code = 404, message = "Not exist"),
-            @ApiResponse(code = 500, message = "The expired or invalid JWT Token")})
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
-    }
-
-    @GetMapping("/{id}")
-    @ApiOperation(value = "Tareas por ID")
-    @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Something went wrong"),
-            @ApiResponse(code = 403, message = "Access denied"),
-            @ApiResponse(code = 404, message = "Not exist"),
-            @ApiResponse(code = 500, message = "The expired or invalid JWT Token")})
-    public Optional<Task> getTaskById(@PathVariable Integer id) {
-        return taskService.getTaskById(id);
-    }
-
-    @GetMapping("/list/{idUser}")
+    @GetMapping("/listUser/{idUser}")
     @ApiOperation(value = "Tareas por ID usario")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -65,7 +44,7 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ApiOperation(value = "Crear tarea")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -76,7 +55,7 @@ public class TaskController {
         return taskService.createTask(task);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     @ApiOperation(value = "Actualizar tarea por ID")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -88,14 +67,26 @@ public class TaskController {
         return taskService.updateTask(task);
     }
 
-    @DeleteMapping("/{id}")
-    @ApiOperation(value = "Eliminar tarea por ID")
+    @PostMapping("/update-status")
+    @ApiOperation(value = "Cambiar el estado de forma masiva")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 404, message = "Not exist"),
             @ApiResponse(code = 500, message = "The expired or invalid JWT Token")})
-    public void deleteTask(@PathVariable Integer id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<?> updateTaskStatus(@RequestBody UpdateTaskStatusRequest request) {
+        taskService.updateTasksStatus(request.getTaskIds(), request.getStatus());
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/delete-massive")
+    @ApiOperation(value = "Eliminar tarea de forma masiva")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"),
+            @ApiResponse(code = 403, message = "Access denied"),
+            @ApiResponse(code = 404, message = "Not exist"),
+            @ApiResponse(code = 500, message = "The expired or invalid JWT Token")})
+    public ResponseEntity<Void> deleteTasksMassive(@RequestBody List<Integer> taskIds) {
+        taskService.deleteTasks(taskIds);
+        return ResponseEntity.ok().build();
     }
 }

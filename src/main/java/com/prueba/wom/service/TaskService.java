@@ -5,6 +5,7 @@ import com.prueba.wom.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,23 +31,6 @@ public class TaskService {
     }
 
     /**
-     * Obtiene todas las tareas disponibles.
-     */
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
-    }
-
-    /**
-     * Obtiene una tarea por su ID.
-     *
-     * @param id ID de la tarea.
-     * @return la tarea encontrada o un valor vacío.
-     */
-    public Optional<Task> getTaskById(Integer id) {
-        return taskRepository.findById(id);
-    }
-
-    /**
      * Crea una nueva tarea.
      */
     public Task createTask(Task task) {
@@ -61,16 +45,23 @@ public class TaskService {
     }
 
     /**
-     * Elimina una tarea por su ID.
-     */
-    public void deleteTask(Integer id) {
-        taskRepository.deleteById(id);
-    }
-
-    /**
      * Obtiene las tareas asociadas a un usuario específico.
      */
     public List<Task> getTasksByUserId(Integer idUser) {
         return taskRepository.findByIdUser(idUser);
+    }
+    /**
+     * Cambia el estado de las tareas de forma masiva.
+     */
+    @Transactional
+    public void updateTasksStatus(List<Integer> taskIds, Integer status) {
+        taskRepository.updateStatusForTasks(status, taskIds);
+    }
+    /**
+     * Elimina las tareas de forma masiva.
+     */
+    @Transactional
+    public void deleteTasks(List<Integer> taskIds) {
+        taskRepository.deleteByIdIn(taskIds);
     }
 }
